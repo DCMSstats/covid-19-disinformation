@@ -22,7 +22,7 @@ def get_subreddir_data(reddit_object, subs, limit = 10):
                         "score":[], \
                         "id":[], "url":[], \
                         "comms_num": [], \
-                        "created": [], \
+                        "created_ufc": [], \
                         "body":[], \
                         "subreddit": [] 
                   }
@@ -50,9 +50,10 @@ def get_subreddir_data(reddit_object, subs, limit = 10):
     topics_data = pd.DataFrame(topics_dict)
     return topics_data    
     
-    
-
-
+def date_range(x):
+    early = min(x)
+    late = max(x)
+    return print(f"The latest date is is {late} and the earliest date is {early}")
 
 
 
