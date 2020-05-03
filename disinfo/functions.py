@@ -14,7 +14,19 @@ def hello(name):
     print("Hello " + name)
     return
 
+
 def get_subreddir_data(reddit_object, subs, limit = 10):
+ """
+        Get Subreddit data
+        
+        Parameters
+        ----------
+        reddit_object : stuffs
+         
+        Returns
+        -------
+        Pandas Dataframe
+"""
     
     reddit = reddit_object
     

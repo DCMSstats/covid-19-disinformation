@@ -15,13 +15,13 @@ reddit = praw.Reddit(client_id='RNGhJE66F0dfcg',
                      user_agent='cdc')
 
 
-df = di.get_subreddir_data(reddit, ["rstats"])
+df = di.get_subreddir_data(reddit, ["rstats"],  limit= 20)
 
 
-datetime_utc = df["created_utc"].apply(di.convert_date)
+datetime_utc = df["created"].apply(di.convert_date)
 
 df = df.assign(datetime = datetime_utc)
 
-k = di.date_range(df["datetime"])
+di.date_range(df["datetime"])
 
 
