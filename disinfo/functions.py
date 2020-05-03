@@ -22,7 +22,7 @@ def get_subreddir_data(reddit_object, subs, limit = 10):
                         "score":[], \
                         "id":[], "url":[], \
                         "comms_num": [], \
-                        "created_ufc": [], \
+                        "created": [], \
                         "body":[], \
                         "subreddit": [] 
                   }
@@ -53,7 +53,7 @@ def get_subreddir_data(reddit_object, subs, limit = 10):
 def date_range(x):
     early = min(x)
     late = max(x)
-    return print(f"The latest date is is {late} and the earliest date is {early}")
+    return early, late, print(f"The latest date is is {late} and the earliest date is {early}")
 
 
 
