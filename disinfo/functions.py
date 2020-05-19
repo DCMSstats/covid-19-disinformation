@@ -67,5 +67,26 @@ def date_range(x):
     late = max(x)
     return early, late, print(f"The latest date is is {late} and the earliest date is {early}")
 
+def get_subreddit_data(reddit_object, search_terms):
+    
+    reddit = reddit_object
+    
+    topics_dict = {  
+                        "subreddit": [] 
+                  }
+    
+    topic_list = search_terms
+    
+    for topic in topic_list:
+    
+        cont_subreddit = reddit.subreddit("all").search(topic)
+        
+        for submission in cont_subreddit:
+                topics_dict["subreddit"].append(submission.subreddit)
+        
+    data = pd.DataFrame(topics_dict)
+    
+    return data
+    
 
 

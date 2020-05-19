@@ -19,7 +19,7 @@ df = di.get_subreddir_data(reddit, ["rstats"],  limit= 20)
 
 datetime_utc = df["created"].apply(di.convert_date)
 
-df = df.assign(datetime = datetime_utc)
+df = df.assign(datetime = datetime_utc)ß
 
 di.date_range(df["datetime"])
 
@@ -29,6 +29,6 @@ h = numpy.loadtxt("test.txt", dtype = 'str')
 
 
 
-for submission in reddit.subreddit("all").search("praw"):
+for submission in reddit.subreddit("all").search("5g"):
     print(submission.title)
     print(submission.subreddit)
