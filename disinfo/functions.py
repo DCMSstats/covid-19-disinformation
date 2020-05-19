@@ -16,7 +16,7 @@ def hello(name):
 
 
 def get_subreddir_data(reddit_object, subs, limit = 10):
- """
+    """
         Get Subreddit data
         
         Parameters
@@ -26,8 +26,8 @@ def get_subreddir_data(reddit_object, subs, limit = 10):
         Returns
         -------
         Pandas Dataframe
-"""
-    
+        """
+   
     reddit = reddit_object
     
     topics_dict = {     "title":[], \
