@@ -4,6 +4,8 @@ Reddit exploatory script
 
 """
 
+# This script 
+
 import praw
 import pandas as pd
 import datetime as dt
