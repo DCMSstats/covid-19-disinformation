@@ -23,12 +23,7 @@ df = df.assign(datetime = datetime_utc)ß
 
 di.date_range(df["datetime"])
 
-
 h = numpy.loadtxt("test.txt", dtype = 'str')
 
 
-
-
-for submission in reddit.subreddit("all").search("5g"):
-    print(submission.title)
-    print(submission.subreddit)
+ 

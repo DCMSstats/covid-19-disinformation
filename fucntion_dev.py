@@ -25,7 +25,6 @@ topics_dict = {
 
 topic_list = ["5g", "cats"] 
 
-
 for topic in topic_list:
     
     cont_subreddit = reddit.subreddit("all").search(topic)
@@ -35,7 +34,7 @@ for topic in topic_list:
     
 
 
-h = get_subreddit_data(reddit_object=reddit,  search_terms = ["cat"])
+h = get_subreddit_data(reddit_object=reddit,  search_terms = ["cat", "Mouse"])
 
 
 

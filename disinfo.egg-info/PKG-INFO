@@ -1,0 +1,16 @@
+Metadata-Version: 2.1
+Name: disinfo
+Version: 0.0.9000
+Summary: A package for collecting infomation from reddit
+Home-page: https://github.com/DCMSstats/covid-19-disinformation
+Author: GOV
+Author-email: joshua.halls@ons.gov.uk
+License: MIT license
+Description: # covid-19-disinformation
+        Analysing spread of covid-19 disinformation
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/x-rst

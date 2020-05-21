@@ -1,0 +1,9 @@
+README.md
+setup.py
+disinfo/__init__.py
+disinfo/functions.py
+disinfo.egg-info/PKG-INFO
+disinfo.egg-info/SOURCES.txt
+disinfo.egg-info/dependency_links.txt
+disinfo.egg-info/requires.txt
+disinfo.egg-info/top_level.txt
