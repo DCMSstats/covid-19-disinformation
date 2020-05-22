@@ -6,7 +6,12 @@ Functions
 
 import datetime as dt
 import pandas as pd
+import praw
 
+# Create PRAW instance
+def setup():
+    r = praw.Reddit('bot1')
+      
 def convert_date(x):
    return dt.datetime.fromtimestamp(x)
 
@@ -87,6 +92,13 @@ def get_subreddit_data(reddit_object, search_terms):
     data = pd.DataFrame(topics_dict)
     
     return data
+
+# Scrape subReddits
+def scrape_Reddit_data(data):
+    
+    post_id_list = []
+    
+    
     
 
 
