@@ -6,6 +6,7 @@ Functions
 
 import datetime as dt
 import pandas as pd
+import yaml
 
 def convert_date(x):
    return dt.datetime.fromtimestamp(x)
@@ -42,4 +43,8 @@ def get_subreddit_names(reddit_object, search_terms):
     return data
     
 
-
+def load_config(config_file = "config.yaml"):
+    
+    config_yml = open(config_file)
+    config = yaml.load(config_yml)
+    return config
