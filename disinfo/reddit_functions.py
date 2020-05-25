@@ -1,19 +1,5 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Tue May 19 17:03:23 2020
-
-@author: josh
-"""
-
-
-import praw
 import pandas as pd
-import datetime as dt
-import disinfo as di
-
-reddit = praw.Reddit("reddit")        
-
 
 def get_subreddit_names(reddit_object, search_terms):
     
@@ -36,8 +22,5 @@ def get_subreddit_names(reddit_object, search_terms):
     
     data = data["subreddit"].apply(str).unique()
     
-    
     return data
     
-
-p = get_subreddit_names(reddit, ["rstats"])

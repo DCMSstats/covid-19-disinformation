@@ -67,7 +67,7 @@ def date_range(x):
     late = max(x)
     return early, late, print(f"The latest date is is {late} and the earliest date is {early}")
 
-def get_subreddit_data(reddit_object, search_terms):
+def get_subreddit_names(reddit_object, search_terms):
     
     reddit = reddit_object
     
