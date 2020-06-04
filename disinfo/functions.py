@@ -11,9 +11,19 @@ import praw
 # Create PRAW instance
 def setup():
     r = praw.Reddit('bot1')
+    
+
+def get_comments(submission, ):
+    
+  for comment in reddit.subreddit('all').stream.comments(skip_existing=True):
+      cbody = comment.body
+      if any(keyword in cbody for keyword in search_terms):
+      print(comment)
+        
       
 def convert_date(x):
-   return dt.datetime.fromtimestamp(x)
+    return dt.datetime.fromtimestamp(x)
+
 
 def hello(name):
     print("Hello " + name)
