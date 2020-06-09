@@ -2,6 +2,7 @@ import base64
 import pandas as pd
 import pandas_gbq
 import praw
+import datetime
 
 project_id = ""
 table = ""
@@ -10,20 +11,24 @@ def cache_reddit_data(event, context):
     """
     Stores reddit data
     """
-
+    
     pubsub_message = base64.b64decode(event['data']).decode('utf-8')
 
     current_data = collect_reddit_data()
+    
+    current_data["created"] = current_data["created"].apply(convert_date)
 
     current_data["backup_date"] = datetime.date.today()
 
     current_data["backup_time"] = datetime.datetime.today().time()
+    
+    earliest_date = min(df1["created"].apply(di.convert_date))
 
-    SQL = """
-        SELECT *
-        FROM reddit_test.reddit_test
+    earliest_date_string =  earliest_date.strftime("%Y-%m-%d")
 
-     """
+    sql = "SELECT * FROM {0} WHERE backup_date > {1}"
+
+    SQL = sql.format(table, earliest_date_string) 
 
     df = pandas_gbq.read_gbq(query=SQL, project_id=project_id)
 
@@ -87,7 +92,7 @@ def get_subreddit_data(reddit_object, subs, comments, sort='new'):
         Returns
         -------
         Pandas Dataframe
-        """
+    """
 
     reddit = reddit_object
 
@@ -130,3 +135,6 @@ def get_subreddit_data(reddit_object, subs, comments, sort='new'):
 
     topics_data = pd.DataFrame(topics_dict)
     return topics_data
+
+def convert_date(x):
+   return dt.datetime.fromtimestamp(x)
