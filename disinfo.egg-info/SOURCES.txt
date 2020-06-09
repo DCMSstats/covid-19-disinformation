@@ -2,6 +2,7 @@ README.md
 setup.py
 disinfo/__init__.py
 disinfo/functions.py
+disinfo/reddit_functions.py
 disinfo.egg-info/PKG-INFO
 disinfo.egg-info/SOURCES.txt
 disinfo.egg-info/dependency_links.txt
