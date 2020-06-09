@@ -97,3 +97,17 @@ def print_output(topic,comments,*args):
         print('\n','Sorting comments based on: %s' %args)
     else:
         print('\n',"Sorting comments based on: new")
+
+def merge_data_unique(dataset1, dataset2):
+    """
+    Merged two datasets returning only unique values
+
+    Returns
+    -------
+    None.
+
+    """
+    
+    merged = pd.merge(left=dataset1, right=dataset2, how="inner")
+    
+    return merged
