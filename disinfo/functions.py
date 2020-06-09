@@ -6,11 +6,13 @@ Functions
 
 import datetime as dt
 import pandas as pd
+import praw
 import yaml
 import argparse
-
+        
 def convert_date(x):
-   return dt.datetime.fromtimestamp(x)
+    return dt.datetime.fromtimestamp(x)
+
 
 def hello(name):
     print("Hello " + name)
@@ -85,6 +87,7 @@ def print_output(topic,comments,*args):
             Parameters:
             ----------
             topics being search for, comments limited to and *args
+>>>>>>> origin/dev
 
 
             Returns
