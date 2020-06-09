@@ -86,6 +86,7 @@ def print_output(topic,comments,*args):
             ----------
             topics being search for, comments limited to and *args
 
+
             Returns
             -------
             Prints to console topics being serached for, comments limited to and how comments are sorted.
