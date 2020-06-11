@@ -14,6 +14,8 @@ def cache_reddit_data(event, context):
     
     pubsub_message = base64.b64decode(event['data']).decode('utf-8')
 
+    # get the data to store
+
     current_data = collect_reddit_data()
     
     current_data["created"] = current_data["created"].apply(convert_date)
@@ -22,17 +24,27 @@ def cache_reddit_data(event, context):
 
     current_data["backup_time"] = datetime.datetime.today().time()
     
-    earliest_date = min(df1["created"].apply(di.convert_date))
-
+    # find the earliest and latest date, used in the SQL query to check for duplicates
+    
+    earliest_date = min(current_data["created"].apply(convert_date))
     earliest_date_string =  earliest_date.strftime("%Y-%m-%d")
 
-    sql = "SELECT * FROM {0} WHERE backup_date > {1}"
+    latest_date = max(current_data["created"].apply(convert_date))
+    latest_date_string =  latest_date.strftime("%Y-%m-%d")
+    
+    sql = "SELECT * FROM {0} WHERE backup_date > {1} AND backup_date < {2}"
+    SQL = sql.format(table, earliest_date_string, latest_date_string) 
 
-    SQL = sql.format(table, earliest_date_string) 
+    # obtain data from the same period to check for duplciates
 
     df = pandas_gbq.read_gbq(query=SQL, project_id=project_id)
-
-    pandas_gbq.to_gbq(current_data, table, project_id=project_id, if_exists="append")
+        
+    # Remove duplcates
+    
+    unique_data = merge_data_unique(df, current_data)
+    
+    # Add data to bigquery
+    pandas_gbq.to_gbq(unique_data, table, project_id=project_id, if_exists="append")
 
     return None
 
@@ -55,6 +67,8 @@ def collect_reddit_data():
 
     return(database)
 
+
+# anything below is a copy and pasted function from disinfo
 
 def get_subreddit_names(reddit_object, search_terms):
 
@@ -138,3 +152,17 @@ def get_subreddit_data(reddit_object, subs, comments, sort='new'):
 
 def convert_date(x):
    return dt.datetime.fromtimestamp(x)
+
+def merge_data_unique(dataset1, dataset2):
+    """
+    Merged two datasets returning only unique values
+
+    Returns
+    -------
+    None.
+
+    """
+    
+    merged = pd.merge(left=dataset1, right=dataset2, how="outer")
+    
+    return merged
