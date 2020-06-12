@@ -79,7 +79,7 @@ def get_subreddit_data(reddit_object, subs, comments= 10, sort='new'):
             topics_dict["created"].append(submission.created)
             topics_dict["body"].append(submission.selftext)
             topics_dict["subreddit"].append(submission.subreddit)
-            topics_dict["author"].append(submission.author)
+            topics_dict["author"].append(hash(submission.author))
             topics_dict["comments"].append(submission.comments)
 
     topics_data = pd.DataFrame(topics_dict)
@@ -115,7 +115,7 @@ def get_redditor_data(redditors):
         
     topics_data = pd.DataFrame(topics_dict)
     return topics_data
-        
+
 
     
 def get_comments(reddit_object, ids):
@@ -133,20 +133,22 @@ def get_comments(reddit_object, ids):
                   "id_from_thread":[], \
                   "comment_body":[], \
                   "comment_permalink":[],\
-                  "comment_score":[]}
+                  "comment_score":[]
+                  }
     
      
     for i in ids:
     
         submission = reddit.submission(id=i)
-        submission.comments.replace_more(limit=None)
+        submission.comments.replace_more(limit=1)
         
         for comment in submission.comments.list():
             topics_dict['comment_body'].append(comment.body)
             topics_dict['id_from_thread'].append(i)
-            topics_dict['comment_author'].append(comment.author)
+            topics_dict['comment_author'].append((comment.author))
             topics_dict['comment_permalink'].append(comment.permalink)
             topics_dict['comment_score'].append(comment.score)
+            
         
     topics_data = pd.DataFrame(topics_dict)
     return topics_data 
