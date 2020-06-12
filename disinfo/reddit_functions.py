@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 import pandas as pd
+import praw
+import disinfo as di
 
 def get_subreddit_names(reddit_object, search_terms):
     
@@ -150,6 +152,41 @@ def get_comments(reddit_object, ids):
         
     topics_data = pd.DataFrame(topics_dict)
     return topics_data 
+
+
+def get_reddit(topics_list, comments_number, reddit_inst= "env"):
+    """
+    A wrapper for other disinfo functions to collect reddit data
+
+    Parameters
+    ----------
+    reddit_inst : TYPE
+        DESCRIPTION.
+    topics_list : TYPE
+        DESCRIPTION.
+    comments_number : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    None.
+
+    """
+    
+    if reddit_inst == "env":
+        reddit = praw.Reddit("reddit")
+    else:
+        reddit = reddit_inst
+    
+    subs_array = di.get_subreddit_names(reddit, topics_list)
+
+    database = di.get_subreddit_data(reddit, subs_array, comments= comments_number, sort="new"  )
+
+    users = di.get_redditor_data(database.author)
+            
+    final_data = pd.concat([database, users], axis=1, join="outer")
+    
+    return final_data
 
 
             
