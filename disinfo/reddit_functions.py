@@ -104,22 +104,21 @@ def get_redditor_data(redditors):
     topics_dict = { "name": [], 
                     "created_utc": [],
                     "has_subscribed": [],
-                    "link_karma": [],
-                    "user_is_banned": []}
+                    "link_karma": []
+                    }
 
     for red in redditors:
         topics_dict["name"].append(red.name)
         topics_dict["created_utc"].append(red.created_utc)
         topics_dict["has_subscribed"].append(red.has_subscribed)
         topics_dict["link_karma"].append(red.link_karma)
-        topics_dict["user_is_banned"].append(red.user_is_banned)
         
     topics_data = pd.DataFrame(topics_dict)
     return topics_data
         
 
     
-def collect_comments(reddit_object, ids):
+def get_comments(reddit_object, ids):
     """
     Given an array of ids for submissions collect comments from each submission
 
@@ -128,6 +127,7 @@ def collect_comments(reddit_object, ids):
     None.
 
     """
+    reddit = reddit_object
     
     topics_dict ={"comment_author":[], \
                   "id_from_thread":[], \
@@ -150,6 +150,6 @@ def collect_comments(reddit_object, ids):
         
     topics_data = pd.DataFrame(topics_dict)
     return topics_data 
-            
-            
+
+
             
