@@ -9,8 +9,8 @@ import praw
 import pandas as pd
 import disinfo as di
 
-comments_number = 5
-topics_list = ["cats"]
+comments_number = 2
+topics_list = ["groundhog"]
 
 reddit = praw.Reddit("reddit")
 

@@ -71,8 +71,9 @@ def get_subreddit_data(reddit_object, subs, comments = 10, sort = 'new'):
             topics_dict["created"].append(submission.created)
             topics_dict["body"].append(submission.selftext)
             topics_dict["subreddit"].append(submission.subreddit)
+            topics_dict["author"].append(submission.author)
             
-            submission.comments.replace_more(limit=None)
+            submission.comments.replace_more(limit=comments)
             comment_body = ""
             for comment in submission.comments.list():
                 comment_body = comment_body + comment.body + "\n"
