@@ -6,13 +6,11 @@ Functions
 
 import datetime as dt
 import pandas as pd
-import praw
 import yaml
 import argparse
-        
-def convert_date(x):
-    return dt.datetime.fromtimestamp(x)
 
+def convert_date(x):
+   return dt.datetime.fromtimestamp(x)
 
 def hello(name):
     print("Hello " + name)
@@ -27,17 +25,17 @@ def date_range(x):
 def load_config(config_file = "config.yaml"):
     """
     Loads the config file for the reddit pipeline
-
+    
     parameters
     ----------
     config_file: str
         Name of the config file. Defaults config.ymal
-
+        
     returns
     -------
     Dictionary of config
-
-
+    
+    
     """
     config_yml = open(config_file)
     config = yaml.load(config_yml)
@@ -46,11 +44,11 @@ def load_config(config_file = "config.yaml"):
 def get_arguments():
     '''
         Defines command line arguments
-
+        
         Parameters:
         ----------
         None
-
+        
         Returns
         -------
         Optional and Required command line arguments
@@ -83,13 +81,11 @@ def get_arguments():
 def print_output(topic,comments,*args):
     '''
             Prints to console topics being serached for, comments limited to and how comments are sorted.
-
+            
             Parameters:
             ----------
             topics being search for, comments limited to and *args
->>>>>>> origin/dev
-
-
+            
             Returns
             -------
             Prints to console topics being serached for, comments limited to and how comments are sorted.
@@ -101,3 +97,17 @@ def print_output(topic,comments,*args):
         print('\n','Sorting comments based on: %s' %args)
     else:
         print('\n',"Sorting comments based on: new")
+
+def merge_data_unique(dataset1, dataset2):
+    """
+    Merged two datasets returning only unique values
+    
+    Returns
+    -------
+    None.
+    
+    """
+    
+    merged = pd.merge(left=dataset1, right=dataset2, how="outer")
+    
+    return merged

@@ -82,4 +82,32 @@ def get_subreddit_data(reddit_object, subs, comments = 10, sort = 'new'):
             
     topics_data = pd.DataFrame(topics_dict)
     return topics_data    
+
+def get_redditor_data(redditors):
+    """
+    Given a array of redditors will return attrbutes of each redditor 
+    Parameters
+    ----------
+    def get_redditor_data : TYPE
+        DESCRIPTION.
+    Returns
+    -------
+    None.
+    """
     
+     
+    topics_dict = { "name": [], 
+                    "created_utc": [],
+                    "has_subscribed": [],
+                    "link_karma": [],
+                    "user_is_banned": []}
+
+    for red in redditors:
+        topics_dict["name"].append(red.name)
+        topics_dict["created_utc"].append(red.created_utc)
+        topics_dict["has_subscribed"].append(red.has_subscribed)
+        topics_dict["link_karma"].append(red.link_karma)
+        topics_dict["user_is_banned"].append(red.user_is_banned)
+        
+    topics_data = pd.DataFrame(topics_dict)
+    return topics_data    
