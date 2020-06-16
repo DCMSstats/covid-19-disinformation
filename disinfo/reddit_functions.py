@@ -79,7 +79,7 @@ def get_subreddit_data(reddit_object, subs, comments= 10, sort='new'):
             topics_dict["created"].append(submission.created)
             topics_dict["body"].append(submission.selftext)
             topics_dict["subreddit"].append(submission.subreddit)
-            topics_dict["author"].append(hash(submission.author))
+            topics_dict["author"].append(submission.author)
             topics_dict["comments"].append(submission.comments)
 
     topics_data = pd.DataFrame(topics_dict)
