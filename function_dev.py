@@ -25,9 +25,6 @@ final_data = pd.concat([database, users], axis=1, join="outer")
             
 comment = di.get_comments(reddit_object = reddit , ids= database.id) 
 
-database.comment_author = database.comment_author.apply(lambda x:hash(x))
-
-comment.name = comment.name.apply(lambda x:hash(x))
-
-final_data = final_data.author.apply(lambda x:hash(x))
+for df in (database, final_data, comment):
+    di.hash_usernames(df)
         
