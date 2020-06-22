@@ -1,13 +1,8 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Functions
-"""
-
-import datetime as dt
-import pandas as pd
 import yaml
 import argparse
+import datetime as dt
+import pandas as pd
+import numpy as np
 
 def convert_date(x):
    return dt.datetime.fromtimestamp(x)
@@ -107,7 +102,37 @@ def merge_data_unique(dataset1, dataset2):
     None.
 
     """
-    
+
     merged = pd.merge(left=dataset1, right=dataset2, how="outer")
-    
+
     return merged
+
+def data_to_add(newData, dataStore):
+    """
+    Filters a pandas dataframe to only new data. Checks the newdata against the datastore
+    and removes any rows which are already in the datastore returning only new data to be added to the datastore.
+
+    Parameters
+    ----------
+    newData : TYPE
+        DESCRIPTION.
+    dataStore : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    None.
+
+    """
+
+    assert 'id' in newData.columns and 'id' in dataStore.columns, 'both datasets need an id column'
+
+    newID = newData.id.to_numpy()
+
+    oldID = dataStore.id.to_numpy()
+
+    id_filter = [ID in oldID for ID in newID]
+
+    id_filter_reverse = np.invert(id_filter)
+
+    return newData[id_filter_reverse]

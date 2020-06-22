@@ -9,13 +9,11 @@ Created on Fri Jun 12 10:18:23 2020
 import praw
 import pandas as pd
 import disinfo as di
-
-comments_number = 5
-topics_list = ["cats"]
-
 reddit = praw.Reddit("reddit")
 
-subs_array = di.get_subreddit_names(reddit, topics_list)
+reddit_data = di.get_reddit(["cats"], 5)
+            
+comment = di.get_comments( reddit_object = reddit , ids= reddit_data.id) 
 
-database = di.get_subreddit_data(reddit, subs_array, comments= comments_number, sort="new"  )
+
 
