@@ -155,15 +155,17 @@ def get_comments(reddit_object, ids):
 
 def hash_usernames(df):
     """
-    Given a dataframe this hashes rows under author column
+    Given a dataframe this hashes rows under author columns
 
     Returns
     -------
     None.
 
     """    
-    df.author = df.author.apply(lambda x:hash(x))
+    if 'author' in df:
+        
+        df.author = df.author.apply(lambda x:hash(x))
 
     if 'author' not in df:
     
-        df.comment_author = df.comment.author.apply(lambda x:hash(x))        
+        df.comment_author = df.comment_author.apply(lambda x:hash(x))        
