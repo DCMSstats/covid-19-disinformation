@@ -140,7 +140,7 @@ def get_comments(reddit_object, ids):
     for i in ids:
     
         submission = reddit.submission(id=i)
-        submission.comments.replace_more(limit=1)
+        submission.comments.replace_more(limit=None)
         
         for comment in submission.comments.list():
             topics_dict['comment_body'].append(comment.body)
