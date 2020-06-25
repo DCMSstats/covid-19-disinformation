@@ -1,4 +1,3 @@
-
 # A test to collect a large amount of subbredits
 
 import praw
@@ -15,7 +14,6 @@ reddit = praw.Reddit("reddit")
 def get_subreddits():
 
     df = di.get_subreddir_data(reddit, ["all"],  limit= 1000)
-
     un = df["subreddit"].unique()
 
     sys.stdout=open("test2.txt","w")
@@ -23,17 +21,12 @@ def get_subreddits():
         print(i)
 
     sys.stdout.close()
-
-
-
     subreddits = np.loadtxt("test2.txt", dtype = 'str')
     
     return(subreddits)
 
 
-
-
 hit = get_subreddits()
 
- df = di.get_subreddir_data(reddit, ["all"],  limit= 1000)
+df = di.get_subreddir_data(reddit, ["all"],  limit= 1000)
  
