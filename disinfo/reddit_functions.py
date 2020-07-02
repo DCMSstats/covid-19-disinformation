@@ -5,27 +5,40 @@ from prawcore import PrawcoreException
 import disinfo as di
 
 def get_subreddit_names(reddit_object, search_terms):
+    """
+    Given a seach term returns all the subredits in which that term is mentioned
 
+    Parameters
+    ----------
+    reddit_object : TYPE
+        DESCRIPTION.
+    search_terms : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    data : ndarrary object of numpy module
+        DESCRIPTION.
+
+    """
     reddit = reddit_object
 
-    topics_dict = {
-                        "subreddit": []
-                  }
-
-    topic_list = search_terms
-
-    for topic in topic_list:
-
-        cont_subreddit = reddit.subreddit("all").search(topic)
-
+    topics_dict = {"subreddit": []}
+    atts = topics_dict.keys()
+    
+    for term in search_terms:
+    
+        cont_subreddit = reddit.subreddit("all").search(term)
+    
         for submission in cont_subreddit:
-            try:
-                topics_dict["subreddit"].append(submission.subreddit)
-            except PrawcoreException as err:
-                topics_dict["subreddit"].append(err.args)
-            except Exception as e:
-                topics_dict["subreddit"].append(e.__class__)
-
+            for att in atts:
+                try:
+                    topics_dict[att].append(getattr(submission, att))
+                except PrawcoreException as err:
+                    topics_dict[att].append(err.args)
+                except Exception as e:
+                    topics_dict[att].append(e.__class__)
+                    
     data = pd.DataFrame(topics_dict)
 
     data = data["subreddit"].apply(str).unique()
