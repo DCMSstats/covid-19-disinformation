@@ -12,17 +12,19 @@ import praw
 import numpy as np
 from prawcore import PrawcoreException
 import datetime
+import json
 
+with open("gcp_config") as f
+    config = json.load(f)
 
-# Cloud function config
-project_id =
-table_sub =
-table_com =
-#reddit = praw.Reddit(client_id='',
-#                     client_secret='',
-#                     user_agent='')
-comments_number =
-topics_list = []
+project_id = config["project_id"]
+table_sub  = config["table_sub"]
+table_com  = config["table_com"]
+reddit = praw.Reddit(config["client_id"], 
+                    config["client_secret"], 
+                    config["user_agent"])
+comments_number = config["comments_number"]
+topics_list = config["topics_list"]
 
 current_data = di.get_reddit(topics_list, comments_number)
 current_data["created"] = current_data["created"].apply(convert_date)
