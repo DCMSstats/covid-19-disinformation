@@ -1,0 +1,20 @@
+{
+    "project_id": "dcms-statistics",
+    "table_sub": "covid19.reddit_subreddit_data",
+    "table_com": "covid19.reddit_comment_data",
+    "client_id" : "RNGhJE66F0dfcg",
+    "client_secret": "reMSAKkNv5daoHSRG3Cy15BhVw8", 
+    "user_agent": "cdc",
+    "comments_number": 10,
+    "topics_list":
+        ["5g", 
+         "coronavirus",
+         "covid",
+         "corona",
+         "pandemic",
+         "sars-cov-2",
+         "epidemic",
+         "outbreak",
+         "koronavirus"]
+
+}

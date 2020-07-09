@@ -1,4 +1,4 @@
-README.md
+README.rst
 setup.py
 disinfo/__init__.py
 disinfo/functions.py
