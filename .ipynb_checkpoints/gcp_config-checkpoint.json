@@ -5,16 +5,14 @@
     "client_id" : "RNGhJE66F0dfcg",
     "client_secret": "reMSAKkNv5daoHSRG3Cy15BhVw8", 
     "user_agent": "cdc",
-    "comments_number": 10,
+    "comments_number": 20,
     "topics_list":
-        ["5g", 
-         "coronavirus",
-         "covid",
-         "corona",
-         "pandemic",
-         "sars-cov-2",
-         "epidemic",
-         "outbreak",
-         "koronavirus"]
-
+        ["5g coronavirus",
+         "5g covid",
+         "5g corona",
+         "5g pandemic",
+         "5g sars-cov-2",
+         "5g epidemic",
+         "5g outbreak",
+         "5g koronavirus"]
 }
