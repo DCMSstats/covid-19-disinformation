@@ -78,5 +78,5 @@ pandas_gbq.to_gbq(comment_data, table_com, project_id=project_id, if_exists="app
 print("DEBUG - finished")
 
 end_time = time.perf_counter()
-
+ 
 print(f"time taken was {end_time - start_time:0.4f} seconds ")
