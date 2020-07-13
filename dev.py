@@ -37,3 +37,4 @@ hit = get_subreddits()
 
  df = di.get_subreddir_data(reddit, ["all"],  limit= 1000)
  
+print("test")

@@ -14,7 +14,7 @@ from prawcore import PrawcoreException
 import datetime
 import json
 
-with open("gcp_config") as f
+with open("gcp_config.json") as f:
     config = json.load(f)
 
 project_id = config["project_id"]
