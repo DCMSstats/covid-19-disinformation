@@ -4,6 +4,7 @@ import praw
 from prawcore import PrawcoreException
 import disinfo as di
 
+
 def get_subreddit_names(reddit_object, search_terms):
     """
     Given a seach term returns all the subredits in which that term is mentioned
@@ -40,7 +41,6 @@ def get_subreddit_names(reddit_object, search_terms):
                     topics_dict[att].append(e.__class__)
                     
     data = pd.DataFrame(topics_dict)
-
     data = data["subreddit"].apply(str).unique()
 
     return data
@@ -59,17 +59,18 @@ def get_subreddit_data(reddit_object, subs, comments= 10, sort='new'):
 
     reddit = reddit_object
 
-    topics_dict = {     "title":[], 
-                        "score":[], 
-                        "id":[],
-                        "url":[], 
-                        "num_comments": [], 
-                        "created": [], 
-                        "selftext":[], 
-                        "subreddit": [],
-                        "author": [],
-                        "comments": []
-                  }
+    topics_dict = {
+        "title":[], 
+        "score":[], 
+        "id":[], 
+        "url":[], 
+        "comms_num": [], 
+        "created": [], 
+        "body":[], 
+        "subreddit": [],
+        "author": [],
+        "comments": []
+    }
 
     atts = topics_dict.keys()
     
@@ -81,13 +82,14 @@ def get_subreddit_data(reddit_object, subs, comments= 10, sort='new'):
 
         subreddit = reddit.subreddit(sub)
 
-        submission_dict ={'new':subreddit.new, \
-                          'controversial':subreddit.controversial,\
-                          'gilded':subreddit.gilded,\
-                          'hot':subreddit.hot,\
-                          'rising':subreddit.rising,\
-                          'top':subreddit.top }
-
+        submission_dict = {
+            'new':subreddit.new, 
+            'controversial':subreddit.controversial,
+            'gilded':subreddit.gilded,
+            'hot':subreddit.hot,
+            'rising':subreddit.rising,
+            'top':subreddit.top
+        }
 
         cont_subreddit = submission_dict[sort](limit=comments)
 
@@ -102,6 +104,7 @@ def get_subreddit_data(reddit_object, subs, comments= 10, sort='new'):
 
     topics_data = pd.DataFrame(topics_dict)
     return topics_data
+
 
 def get_redditor_data(redditors):
     """
@@ -119,11 +122,12 @@ def get_redditor_data(redditors):
     """
 
 
-    topics_dict = { "name": [],
-                    "created_utc": [],
-                    "has_subscribed": [],
-                    "link_karma": []
-                    }
+    topics_dict = {
+        "name": [],
+        "created_utc": [],
+        "has_subscribed": [],
+        "link_karma": []
+    }
 
     atts = topics_dict.keys()
     
@@ -142,7 +146,8 @@ def get_redditor_data(redditors):
 
 def get_comments(reddit_object, ids):
     """
-    Given an array of ids for submissions collect comments from each submission
+    Given an array of ids for submissions collect 
+    comments from each submission
 
     Returns
     -------
@@ -151,11 +156,13 @@ def get_comments(reddit_object, ids):
     """
     reddit = reddit_object
 
-    topics_dict ={"author":[], \
-                  "id":[], \
-                  "body":[], \
-                  "permalink":[],\
-                  "score":[]}
+    topics_dict = {
+        "comment_author": [], 
+        "id_from_thread": [], 
+        "comment_body": [], 
+        "comment_permalink": [],
+        "comment_score": []
+    }
 
     atts = topics_dict.keys()
     
@@ -202,11 +209,10 @@ def get_reddit(topics_list, comments_number, reddit_inst= "env"):
         reddit = reddit_inst
 
     subs_array = di.get_subreddit_names(reddit, topics_list)
-
-    database = di.get_subreddit_data(reddit, subs_array, comments= comments_number, sort="new"  )
-
+    database = di.get_subreddit_data(
+        reddit, subs_array, comments= comments_number, sort="new"
+    )
     users = di.get_redditor_data(database.author)
-
     final_data = pd.concat([database, users], axis=1, join="outer")
 
     return final_data
