@@ -140,7 +140,6 @@ def get_redditor_data(redditors):
     return topics_data
 
 
-
 def get_comments(reddit_object, ids):
     """
     Given an array of ids for submissions collect comments from each submission
@@ -211,3 +210,21 @@ def get_reddit(topics_list, comments_number, reddit_inst= "env"):
     final_data = pd.concat([database, users], axis=1, join="outer")
 
     return final_data
+
+def hash_usernames(df):
+    """
+    Given a dataframe this hashes rows under author columns
+
+    Returns
+    -------
+    None.
+
+    """    
+    if 'author' in df:
+        
+        df.author = df.author.apply(lambda x:hash(x))
+
+    if 'author' not in df:
+    
+        df.comment_author = df.comment_author.apply(lambda x:hash(x))        
+
