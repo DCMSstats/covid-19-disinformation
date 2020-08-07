@@ -19,7 +19,7 @@ def update_submissions(reddit_object, subreddit_name)
     Parameters
     ----------
     reddit_object : ?
-    subreddit_names : list
+    subreddit_names : str
     """
     pass
 
@@ -31,6 +31,6 @@ def collect_new_comments(reddit_object, submission_id):
     Parameters
     ----------
     reddit_object : ?
-    subreddit_names : list
+    subreddit_names : str
     """
     pass
