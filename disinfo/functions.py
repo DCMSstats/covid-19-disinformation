@@ -77,7 +77,7 @@ def get_arguments():
             'providing options, doesn\'t take any ',
             'arguments but needs config.yaml file ',
             '(provided with package).',
-        ])
+        ]),
         action="store_true"
     )
     parse.add_argument(
@@ -101,7 +101,7 @@ def get_arguments():
             'Saves results to google bigquery reddit_table. ',
             'Needs project id (found on google cloud ',
             'platform), reddit_table also needs name so ',
-            'flag -n must be used.''
+            'flag -n must be used.'
         ])
     )
     parse.add_argument(

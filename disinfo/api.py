@@ -8,8 +8,16 @@ def update_subreddit_names(reddit_object, search_terms):
     reddit_object : ?
     search_terms : list
     """
-    pass
+    subreddits = get_subreddit_names(reddit_object, search_terms)
 
+    sql = f"""
+        SELECT * FROM {table}
+    """
+    existing_subreddits = pandas_gbq.read_gbq(query=SQL, project_id=project_id)
+
+    unique_subs = np.concatenate([subreddits, existing_subreddits[~np.isin(subreddits,existing_subreddits)]])
+
+    return(unique_subs)
 
 def update_submissions(reddit_object, subreddit_name)
     """
