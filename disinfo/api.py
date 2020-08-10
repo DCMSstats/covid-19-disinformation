@@ -1,4 +1,4 @@
-def update_subreddit_names(reddit_object, search_terms):
+def update_subreddit_names(reddit_object, config):
     """
     Get a list of subreddit names using a list of search terms. Append these to
     the existing list of subreddits to collect.
@@ -8,16 +8,25 @@ def update_subreddit_names(reddit_object, search_terms):
     reddit_object : ?
     search_terms : list
     """
-    subreddits = get_subreddit_names(reddit_object, search_terms)
+
+    project_id = config["project_id"]
+    topics_list = config["topics_list"]
+    table_subreddits = config["table_subreddit_list"]
+
+    subreddits = di.get_subreddit_names(reddit_object, topics_list)
 
     sql = f"""
-        SELECT * FROM {table}
+        SELECT subreddits FROM {table_subreddits}
     """
     existing_subreddits = pandas_gbq.read_gbq(query=SQL, project_id=project_id)
 
-    unique_subs = np.concatenate([subreddits, existing_subreddits[~np.isin(subreddits,existing_subreddits)]])
+    subs_to_add =  subreddits[~np.isin(subreddits, existing_subreddits)]
 
-    return(unique_subs)
+    assert len(np.unique(subs_to_add)) == len(subs_to_add), "not all values are unique"
+
+    subs_df =  pd.DataFrame({"subreddits": subs_to_add})
+    pandas_gbq.to_gbq(subs_df, table_subreddits, project_id=project_id, if_exists="append") 
+
 
 def update_submissions(reddit_object, subreddit_name)
     """
