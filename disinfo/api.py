@@ -1,3 +1,5 @@
+from .logging import cloud_logger, report_errors
+
 def update_subreddit_names(reddit_object, search_terms):
     """
     Get a list of subreddit names using a list of search terms. Append these to
