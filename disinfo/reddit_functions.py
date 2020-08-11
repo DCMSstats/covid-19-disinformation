@@ -5,7 +5,7 @@ from prawcore import PrawcoreException
 import disinfo as di
 
 
-def get_subreddit_names(reddit_object, search_terms):
+def get_subreddit_names(reddit_object, search_terms, config):
     """
     Given a seach term returns all the subredits in which that term is mentioned
 
@@ -24,7 +24,7 @@ def get_subreddit_names(reddit_object, search_terms):
     """
     reddit = reddit_object
 
-    topics_dict = {"subreddit": []}
+    topics_dict = dict.fromkeys(config["get_subreddit_names_fields"], '')
     atts = topics_dict.keys()
     
     for term in search_terms:
@@ -46,7 +46,7 @@ def get_subreddit_names(reddit_object, search_terms):
     return data
 
 
-def get_subreddit_data(reddit_object, subs, comments= 10, sort='new'):
+def get_subreddit_data(reddit_object, subs, config, comments= 10, sort='new'):
     """
         Get Subreddit data
         Parameters
@@ -59,18 +59,7 @@ def get_subreddit_data(reddit_object, subs, comments= 10, sort='new'):
 
     reddit = reddit_object
 
-    topics_dict = {
-        "title":[], 
-        "score":[], 
-        "id":[], 
-        "url":[], 
-        "comms_num": [], 
-        "created": [], 
-        "body":[], 
-        "subreddit": [],
-        "author": [],
-        "comments": []
-    }
+    topics_dict = dict.fromkeys(config["get_subreddit_data_fields"], [])
 
     atts = topics_dict.keys()
     
@@ -106,7 +95,7 @@ def get_subreddit_data(reddit_object, subs, comments= 10, sort='new'):
     return topics_data
 
 
-def get_redditor_data(redditors):
+def get_redditor_data(redditors, connfig):
     """
     Given a array of redditors will return attrbutes of each redditor
 
@@ -122,12 +111,7 @@ def get_redditor_data(redditors):
     """
 
 
-    topics_dict = {
-        "name": [],
-        "created_utc": [],
-        "has_subscribed": [],
-        "link_karma": []
-    }
+    topics_dict = dict.fromkeys(config["get_redditor_data_fields"], [])
 
     atts = topics_dict.keys()
     
@@ -156,13 +140,7 @@ def get_comments(reddit_object, ids):
     """
     reddit = reddit_object
 
-    topics_dict = {
-        "comment_author": [], 
-        "id_from_thread": [], 
-        "comment_body": [], 
-        "comment_permalink": [],
-        "comment_score": []
-    }
+    topics_dict = dict.fromkeys(config["get_comments_fields"], [])
 
     atts = topics_dict.keys()
     
