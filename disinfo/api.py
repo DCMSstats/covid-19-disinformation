@@ -1,23 +1,25 @@
-def update_subreddit_names(reddit_object, config):
+import pandas_gbq
+import pandas as pd
+import numpy as np
+
+def update_subreddit_names(reddit_object):
     """
     Get a list of subreddit names using a list of search terms. Append these to
     the existing list of subreddits to collect.
 
     Parameters
     ----------
-    reddit_object : ?
-    search_terms : list
+    reddit_object : A PRAW Reddit instance. You can read the [PRAW documentation](https://praw.readthedocs.io/en/latest/code_overview/reddit_instance.html) to get more information. 
     """
 
-    project_id = config["project_id"]
-    topics_list = config["topics_list"]
-    table_subreddits = config["table_subreddit_list"]
+    project_id = os.environ["project_id"]
+    topics_list = os.environ["topics_list"]
+    table_subreddits = os.environ["table_subreddit_list"]
 
     subreddits = di.get_subreddit_names(reddit_object, topics_list)
 
-    sql = f"""
-        SELECT subreddits FROM {table_subreddits}
-    """
+    SQL = f""" SELECT subreddits FROM {table_subreddits} """
+    
     existing_subreddits = pandas_gbq.read_gbq(query=SQL, project_id=project_id)
 
     subs_to_add =  subreddits[~np.isin(subreddits, existing_subreddits)]
