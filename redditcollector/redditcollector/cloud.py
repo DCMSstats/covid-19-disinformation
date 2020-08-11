@@ -4,6 +4,7 @@ import pandas_gbq
 
 from .logging import cloud_logger, report_errors
 from .api import get_subreddit_names
+from . import config
 
 
 def update_subreddit_names(event, context):
@@ -18,8 +19,8 @@ def update_subreddit_names(event, context):
     """
 
     project_id = os.environ["GCP_PROJECT"]
-    topics_list = os.environ["topics_list"]
-    table_subreddits = os.environ["table_subreddit_list"]
+    topics_list = config["topics_list"]
+    table_subreddits = config["table_subreddit_list"]
 
     subreddits = get_subreddit_names(reddit_object, topics_list)
 
