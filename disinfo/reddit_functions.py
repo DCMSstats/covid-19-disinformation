@@ -211,4 +211,3 @@ def hash_usernames(df):
     if 'author' not in df:
     
         df.comment_author = df.comment_author.apply(lambda x:hash(x))        
-
