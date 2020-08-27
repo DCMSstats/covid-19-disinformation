@@ -95,7 +95,7 @@ def get_subreddit_data(reddit_object, subs, config, comments= 10, sort='new'):
     return topics_data
 
 
-def get_redditor_data(redditors, connfig):
+def get_redditor_data(redditors, config):
     """
     Given a array of redditors will return attrbutes of each redditor
 
@@ -162,7 +162,7 @@ def get_comments(reddit_object, ids):
     return topics_data
 
 
-def get_reddit(topics_list, comments_number, reddit_inst= "env"):
+def get_reddit(topics_list, comments_number, config, reddit_inst= "env"):
     """
     A wrapper for other disinfo functions to collect reddit data
 
@@ -186,11 +186,11 @@ def get_reddit(topics_list, comments_number, reddit_inst= "env"):
     else:
         reddit = reddit_inst
 
-    subs_array = di.get_subreddit_names(reddit, topics_list)
+    subs_array = di.get_subreddit_names(reddit, topics_list, config)
     database = di.get_subreddit_data(
-        reddit, subs_array, comments= comments_number, sort="new"
+        reddit, subs_array, config, comments= comments_number, sort="new"
     )
-    users = di.get_redditor_data(database.author)
+    users = di.get_redditor_data(database.author, config)
     final_data = pd.concat([database, users], axis=1, join="outer")
 
     return final_data

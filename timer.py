@@ -38,7 +38,7 @@ user_agent =  config["user_agent"]
 # init the praw instance
 reddit = praw.Reddit(client_id = client_id, client_secret = client_secret,  user_agent = user_agent)
 
-current_data = di.get_reddit(topics_list, comments_number, reddit_inst=reddit)
+current_data = di.get_reddit(topics_list, comments_number, config, reddit_inst=reddit)
 
 print("DEBUG - finished")
 
