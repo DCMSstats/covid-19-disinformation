@@ -3,9 +3,6 @@ import pandas_gbq
 import pandas as pd
 import numpy as np
 
-from .logging import cloud_logger, report_errors
-
-
 def update_subreddit_names(reddit_object):
     """
     Get a list of subreddit names using a list of search terms. Append these to
