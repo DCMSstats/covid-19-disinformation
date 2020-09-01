@@ -24,7 +24,7 @@ def get_subreddit_names(reddit_object, search_terms, config):
     """
     reddit = reddit_object
 
-    topics_dict = dict.fromkeys(config["get_subreddit_names_fields"], '')
+    topics_dict = dict.fromkeys(config["get_subreddit_names_fields"], [])
     atts = topics_dict.keys()
     
     for term in search_terms:

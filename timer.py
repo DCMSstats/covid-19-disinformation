@@ -28,7 +28,9 @@ project_id = config["project_id"]
 table_sub  = config["table_sub"]
 table_com  = config["table_com"]
 
-comments_number = config["comments_number"]
+# comment_number is changed to 1 rather than using the config so that it doesn't take to long
+comments_number = int(1)
+
 topics_list = config["topics_list"]
 
 client_id = config["client_id"]
@@ -44,4 +46,7 @@ print("DEBUG - finished")
 
 end_time = time.perf_counter()
 
-print(f"time taken was {end_time - start_time:0.4f} seconds ")
+time_taken = end_time - start_time
+
+print(f"time taken was {time_taken:0.4f} seconds ")
+print(f"time taken in minutes is {time_taken/60:0.4f} mins")
