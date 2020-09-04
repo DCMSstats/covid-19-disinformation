@@ -5,6 +5,24 @@ import pandas as pd
 import pandas_gbq
 import numpy as np
 
+def generate_test_data():
+
+    mock_data = pd.DataFrame({
+    "author": ["popcornboiii", "TweetArchiveBot", "SJWagner", "TradeFlags", "TrueIndologyBot"],
+    "title": ["synchroneous autocompletion for rstats in vim8", 
+    "White House moves to halt evictions as fears of coronavirus-fueled housing crisis grow", 
+    'Fauci pushes back against minimizing of coronavirus death toll', 
+    'The Gateway Pundit: US Markets Set New All-time Highs in the S&amp;P 500 and Nasdaq – Way Above What’s Needed Per One Study for Trump to Win in November',
+    'Democrats are losing the fucking plot'],
+    "selftext": ['He is awful and will lead the US into a white supremacist dystopia.',
+     np.nan, 
+     'As the title asks. I am genuinely worried about the future of our Nation. I am not a patriotic person and am against Nationalism. I have been watching a lot of WW2 documentaries lately and the rise of Hitler and his rhetoric has seemed awfully familiar to Trumps. I would love to hear some insight on what your thoughts the future of our country will be. Thank you',
+     'Biden will have a massive scandal next month. (Something to go with racism or sex crime allegations)\n\nAttempted Trump assassination before Nov 3\n\nThe house of representatives will choose the next president. They will choose Trump.',
+      "Our daycare provider tested positive for Coronavirus. She has stated that she can open after 10 days which is Tuesday September 8. We were told that our kids can't come back for 14 days even if they test negative. How is that possible?\n\nThe states website is worthless for what to do and the phone line runs from 9-4 so if you work during that time you can't ask anyone. Does anyone know the guidelines? \n\nWe already burned through our pto and extra Coronavirus time off for previous exposure and are on thin ice with our jobs already."]
+    })
+
+    return mock_data
+
 def dataframe_seperator(df, chunk_size):
     """
     A function to seperate a dataframe into smaller chunks by row. A dictionary is returned which contains the original dataframe
@@ -23,7 +41,7 @@ def dataframe_seperator(df, chunk_size):
     """
     dict_of_df = {} 
 
-    chunk_num = test.shape[0] / chunk_size
+    chunk_num = df.shape[0] / chunk_size
 
     chunk_size = int(df.shape[0] / chunk_num)
 
