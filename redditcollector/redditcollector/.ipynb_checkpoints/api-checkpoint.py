@@ -63,9 +63,9 @@ class RedditCollector():
             return comments
         
         
-    def collect_submissions(self):
+    def collect_comments(self):
         """
-        Collect reddit submissions for the given configuration
+        Collect reddit comments for the given configuration
         parameters and write them to Google Big Query.
         """
         gen = self.pushshift.search_comments(
