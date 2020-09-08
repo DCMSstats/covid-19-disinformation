@@ -1,0 +1,43 @@
+{
+    "project_id": "dcms-statistics",
+    "table_sub": "covid19.reddit_subreddit_data",
+    "table_com": "covid19.reddit_comment_data",
+    "table_subreddit_list": "covid19.reddit_subreddit_list",
+    "client_id" : "RNGhJE66F0dfcg",
+    "client_secret": "reMSAKkNv5daoHSRG3Cy15BhVw8", 
+    "user_agent": "cdc",
+    "comments_number": 10,
+    "topics_list":
+        ["5g coronavirus",
+         "5g covid",
+         "5g corona",
+         "5g pandemic",
+         "5g sars-cov-2",
+         "5g epidemic",
+         "5g outbreak",
+         "5g koronavirus"],
+    "get_subreddit_names_fields":
+        ["subreddit"],
+    "get_subreddit_data_fields":
+        ["title", 
+        "score", 
+        "id", 
+        "url", 
+        "comms_num", 
+        "created", 
+        "body", 
+        "subreddit",
+        "author",
+        "comments"],
+    "get_redditor_data_fields":
+        ["name",
+        "created_utc",
+        "has_subscribed",
+        "link_karma"],
+    "get_comments_fields":
+        ["comment_author", 
+        "id_from_thread", 
+        "comment_body", 
+        "comment_permalink",
+        "comment_score"]
+}
