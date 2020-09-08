@@ -1,0 +1,4 @@
+pandas>=1
+pandas_gbq
+psaw
+pyyaml

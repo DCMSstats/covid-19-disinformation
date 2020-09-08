@@ -1,0 +1,22 @@
+Metadata-Version: 2.1
+Name: redditcollector
+Version: 0.0.9000
+Summary: A package for topic-orientated infomation collection from reddit
+Home-page: https://github.com/DCMSstats/covid-19-disinformation
+Author: Office for National Statistics
+Author-email: gsshelp@statistics.gov.uk
+License: MIT license
+Description: Reddit Collector
+        ================
+        
+        ``redditcollector`` is a Python package to collect current reddit data for specific topics.
+        
+        ``redditcollector`` uses the ``praw`` package to collect reddit data.
+        It has been built for use in Google Cloud Functions, to interface with Google Big Query storage.
+        However, its API functions can be used from any environment. 
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/x-rst

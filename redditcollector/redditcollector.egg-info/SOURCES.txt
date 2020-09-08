@@ -1,0 +1,10 @@
+README.rst
+setup.py
+redditcollector/__init__.py
+redditcollector/api.py
+redditcollector/pushshift.py
+redditcollector.egg-info/PKG-INFO
+redditcollector.egg-info/SOURCES.txt
+redditcollector.egg-info/dependency_links.txt
+redditcollector.egg-info/requires.txt
+redditcollector.egg-info/top_level.txt
