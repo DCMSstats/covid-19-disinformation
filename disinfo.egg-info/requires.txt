@@ -1,3 +1,0 @@
-DateTime==4.3
-pandas==1.0
-praw==7.0
