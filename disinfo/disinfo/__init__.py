@@ -1,4 +1,4 @@
-from disinfo.api import *
-from disinfo.reddit_functions import *
-from disinfo.functions import *
+from disinfo.nlp.redditText import *
+from disinfo.nlp.topicMod import *
+from disinfo.nlp.nlp_functions import *
 
