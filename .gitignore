@@ -7,3 +7,5 @@ __pycache__
 gcp_config.json
 test_data.csv
 .vscode*
+*.csv
+test_data
