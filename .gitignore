@@ -9,3 +9,5 @@ test_data.csv
 .vscode*
 *.csv
 test_data
+*.DS_Store
+.DS_Store

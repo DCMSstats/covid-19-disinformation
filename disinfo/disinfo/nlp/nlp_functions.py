@@ -202,7 +202,6 @@ def get_phrases(texts) -> list:
     return texts
 
 def calc_tfidf(texts: list, char_ngrams=False, stop_words=None, max_features=20000) -> object:
-
     token_pattern_2_char = r"(?u)\b\w\w+\b"  # original
 
     if char_ngrams:
@@ -216,11 +215,12 @@ def calc_tfidf(texts: list, char_ngrams=False, stop_words=None, max_features=200
     count_vectorizer = CountVectorizer(tokenizer=None, max_df = .5, min_df = 2,
                                        ngram_range=ngrams, max_features=max_features,
                                        binary=False, analyzer=analyzer, token_pattern=token_pattern_2_char)
+
     count_matrix = count_vectorizer.fit_transform(texts)
+    output["count matrix"] = count_matrix
 
     output["features"] = count_vectorizer.get_feature_names()
-
+    
     tfidf_transformer = TfidfTransformer(use_idf = True)
     output["matrix"] = tfidf_transformer.fit_transform(count_matrix)
-
     return output
