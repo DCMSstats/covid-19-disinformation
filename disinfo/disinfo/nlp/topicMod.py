@@ -132,7 +132,7 @@ class topicAnalysis(redditText):
 
             topic_data = self.data.loc[self.data["dominant_topic"] == n]
             topic_data.reset_index(drop=True, inplace=True)
-            example = topic_data["user_comment"][topic_data["p"].argmax()]
+            example = self.text[topic_data["p"].argmax()]
             topics["example"].append(example)
 
         self.examples = pd.DataFrame(topics)
