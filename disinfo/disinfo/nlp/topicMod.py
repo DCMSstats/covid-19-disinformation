@@ -32,6 +32,14 @@ class topicAnalysis(redditText):
 
         self.tfidf = calc_tfidf(self.__joined)
 
+    def update_lemmas_tfidf(self, new_lemmas):
+
+        self.lemmas = new_lemmas
+
+        self.__joined = [' '.join(i) for i in self.lemmas]
+
+        self.tfidf = calc_tfidf(self.__joined)
+
     def model_NMF(self, n_topics = 5):
         """
         Create NMF topic model
@@ -223,6 +231,7 @@ class topicAnalysis(redditText):
                                             eta= beta,
                                             per_word_topics=True)
 
+
         coherence_model_lda = CoherenceModel(model=lda_model, texts=self.lemmas, dictionary=id2word, coherence='c_v')
         coherence_lda = coherence_model_lda.get_coherence()
         #print(f"Coherence Score: {coherence_lda} for number of topic = {topic_number}, alpha = {alpha} and beta = {beta} ")
@@ -261,18 +270,42 @@ class topicAnalysis(redditText):
         if topic_num is None:
             topic_num =  range(4,8)
 
+
+        # If a single number is given make that into a list so that it works
+        if type(topic_num) is int:
+            topic_num = [topic_num]
+
         if alpha is None:
             alpha = list(np.arange(0.01, 1, 0.3))
             alpha.append('symmetric')
             alpha.append('asymmetric')
 
+        if alpha is "default":
+            alpha = ['symmetric']
+
         if beta is None:
             beta = list(np.arange(0.01, 1, 0.3))
             beta.append('symmetric')
 
-        total_models_to_run = len(topic_num) * len(alpha) * len(beta)
+        if beta is "default":
+            beta = [None]
 
-        print(f"You have selected {total_models_to_run} models to run. This make take some time...")
+        try:    
+            total_models_to_run = len(topic_num) * len(alpha) * len(beta)
+        except TypeError:
+            len([topic_num]) * len([alpha]) * len([beta])
+        except:
+            pass
+
+        assert type(topic_num) is list, "topic number must be a list"
+        assert type(alpha) is list, "alpha must be a list"
+        assert type(beta) is list, "beta must be a list"
+
+        try:
+            print(f"You have selected {total_models_to_run} models to run. This make take some time...")
+        except:
+            total_models_to_run = 1
+            print("Unable to caculate the number of mdoels that will be run")
 
         model_score = {
                 "coherence_score": [],
