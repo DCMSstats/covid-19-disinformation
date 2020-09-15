@@ -1,4 +1,0 @@
-# GBQ config
-gbq_project = example-project
-gbq_submission_table = submission_table_name
-gbq_comments_table = comments_table_name

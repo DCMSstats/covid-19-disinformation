@@ -9,3 +9,4 @@ test_data.csv
 .vscode*
 *.csv
 test_data
+*disinfo_config.yaml

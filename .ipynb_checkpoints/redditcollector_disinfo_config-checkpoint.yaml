@@ -1,0 +1,5 @@
+# GBQ config
+gbq_project: dcms-statistics
+gbq_submissions_table: covid19.redditcollector_submissions
+gbq_comments_table: covid19.redditcollector_comments
+gbq_logging_table: covid19.redditcollector_logging

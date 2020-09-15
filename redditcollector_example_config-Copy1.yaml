@@ -1,0 +1,5 @@
+# GBQ config
+gbq_project: example-project
+gbq_submission_table: db.submission
+gbq_comments_table: db.comments
+gbq_logging_table: db.logging

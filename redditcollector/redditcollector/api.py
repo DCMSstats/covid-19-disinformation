@@ -3,6 +3,8 @@ import pandas_gbq
 import datetime as dt
 import yaml
 from pathlib import Path
+import uuid
+import json
 
 from .pushshift import pushshift
 
@@ -13,8 +15,9 @@ class RedditCollector():
     """
     _REQUIRED_CONFIG = [
         "gbq_project",
-        "gbq_submission_table",
-        "gbq_comments_table"
+        "gbq_submissions_table",
+        "gbq_comments_table",
+        "gbq_logging_table",
     ]
     
     def __init__(self, config):
@@ -36,56 +39,84 @@ class RedditCollector():
         self.config = config
                 
 
-    def collect_submissions(self, query, start_date, end_date, write_to_gbq=False):
+    def collect_submissions(self, query, start_date, end_date, subreddits=None):
         """
         Collect reddit submissions for the given configuration
         parameters and write them to Google Big Query.
+        Set query to None if no query.
         """
-        submissions = self._collect("comments", query, start_date, end_date)
+        unique_id = self._collect("submissions", query, start_date, end_date, subreddits)
         
-        if write_to_gbq:
-            self._write_to_gbq(submissions)
-        
-        return submissions
+        return unique_id
         
         
-    def collect_comments(self, query, start_date, end_date, write_to_gbq=False):
+    def collect_comments(self, query, start_date, end_date, subreddits=None):
         """
         Collect reddit comments for the given configuration
         parameters and write them to Google Big Query.
+        Set query to None if no query.
         """
-        comments = self._collect("comments", query, start_date, end_date)
+        unique_id = self._collect("comments", query, start_date, end_date, subreddits)
         
-        if write_to_gbq:
-            self._write_to_gbq(comments)
-
-        return comments
-        
-        
-    @staticmethod
-    def _parse_date_to_timestamp(date):
-        return int(dt.datetime.strptime(date, "%Y/%m/%d").timestamp())
+        return unique_id
     
-    def _write_to_gbq(self, dataframe):
+    
+    def _write_to_gbq(self, mode, dataframe):
         pandas_gbq.to_gbq(
             dataframe,
-            self.config["gbq_comments_table"], 
+            self.config[f"gbq_{mode}_table"], 
             project_id=self.config["gbq_project"],
             if_exists="append"
         )
         
         
-    def _collect(self, mode, query, start_date, end_date):
+    def _collect(self, mode, query, start_date, end_date, subreddits):
         """
-        Collect data from pushshift for specified mode ("comments or "))
+        Collect data from pushshift for specified mode.
         """
         if mode not in ["comments", "submissions"]:
             raise ValueError("Mode must be comments or submissions")
-        gen = getattr(self.pushshift, "search_" + mode)(
-            q=query,
-            after=self._parse_date_to_timestamp(start_date),
-            before=self._parse_date_to_timestamp(end_date)
-            )
+        if isinstance(subreddits, str) or subreddits is None:
+            subreddits = [subreddits]
 
-        return pd.DataFrame([obj.d_ for obj in gen])
-            
+        unique_id = uuid.uuid4()
+        
+        start_date = dt.datetime.strptime(start_date, "%Y/%m/%d")
+        end_date = dt.datetime.strptime(end_date, "%Y/%m/%d")
+        t_delta = dt.timedelta(days=1)
+    
+        logging_data = pd.DataFrame({
+            "uuid": unique_id,
+            "query": query,
+            "subreddits": json.dumps(subreddits),
+            "query_datetime": dt.datetime.now(),
+            "start_date": start_date,
+            "end_date": end_date
+        }, index=[0])
+        self._write_to_gbq("logging", logging_data)
+        print("Query uuid logged: " + str(unique_id))
+        
+        if start_date > end_date:
+            raise ValueError("Start date must be before end date")
+        for subreddit in subreddits:
+            # Loop for each t_delta period between start and end
+            while start_date <= end_date:
+                gen = getattr(self.pushshift, "search_" + mode)(
+                    q=query,
+                    subreddit=subreddit,
+                    after=int(start_date.timestamp()),
+                    before=int((start_date + t_delta).timestamp())
+                    )
+                start_date += t_delta
+                
+                search_data = pd.DataFrame([obj.d_ for obj in gen]).sort_index(axis=1)
+                search_data.insert(0, "uuid", unique_id)
+
+                self._write_to_gbq(mode, search_data)
+        
+        print("Query completed successfully, returning uuid")
+        return unique_id
+        
+    def query_gbq(self, sql):
+        return pandas_gbq.read_gbq(sql, project_id=self.config["gbq_project"])
+                                           
