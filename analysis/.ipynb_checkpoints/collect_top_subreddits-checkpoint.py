@@ -22,6 +22,6 @@ coms_query_uuid, coms_errors = collector.collect_comments(
 )
 
 print("Submissions errors: ", subs_errors)
-print("Comments errors: "coms_errors)
+print("Comments errors: ", coms_errors)
 print("Submission uuid: ", subs_query_uuid)
 print("Comments uuid: ", coms_query_uuid)
