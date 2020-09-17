@@ -45,9 +45,9 @@ class RedditCollector():
         parameters and write them to Google Big Query.
         Set query to None if no query.
         """
-        unique_id = self._collect("submissions", query, start_date, end_date, subreddits)
+        unique_id, errors = self._collect("submissions", query, start_date, end_date, subreddits)
         
-        return unique_id
+        return unique_id, errors
         
         
     def collect_comments(self, query, start_date, end_date, subreddits=None):
@@ -58,7 +58,7 @@ class RedditCollector():
         """
         unique_id = self._collect("comments", query, start_date, end_date, subreddits)
         
-        return unique_id
+        return unique_id, errors
     
     
     def _write_to_gbq(self, mode, dataframe):
@@ -66,7 +66,7 @@ class RedditCollector():
             dataframe,
             self.config[f"gbq_{mode}_table"], 
             project_id=self.config["gbq_project"],
-            if_exists="append"
+            if_exists="replace"
         )
         
         
@@ -83,10 +83,12 @@ class RedditCollector():
         
         start_date = dt.datetime.strptime(start_date, "%Y/%m/%d")
         end_date = dt.datetime.strptime(end_date, "%Y/%m/%d")
+        daterange = pd.date_range(start_date, end_date)
         t_delta = dt.timedelta(days=1)
     
         logging_data = pd.DataFrame({
             "uuid": unique_id,
+            "mode": mode,
             "query": query,
             "subreddits": json.dumps(subreddits),
             "query_datetime": dt.datetime.now(),
@@ -96,26 +98,35 @@ class RedditCollector():
         self._write_to_gbq("logging", logging_data)
         print("Query uuid logged: " + str(unique_id))
         
+        error_count = 0
+        errors = {}
         if start_date > end_date:
             raise ValueError("Start date must be before end date")
         for subreddit in subreddits:
             # Loop for each t_delta period between start and end
-            while start_date <= end_date:
-                gen = getattr(self.pushshift, "search_" + mode)(
-                    q=query,
-                    subreddit=subreddit,
-                    after=int(start_date.timestamp()),
-                    before=int((start_date + t_delta).timestamp())
-                    )
-                start_date += t_delta
-                
-                search_data = pd.DataFrame([obj.d_ for obj in gen]).sort_index(axis=1)
-                search_data.insert(0, "uuid", unique_id)
+            for date in daterange:
+                try:
+                    gen = getattr(self.pushshift, "search_" + mode)(
+                        q=query,
+                        subreddit=subreddit,
+                        after=int(date.timestamp()),
+                        before=int((date + t_delta).timestamp())
+                        )
+                    start_date += t_delta
 
-                self._write_to_gbq(mode, search_data)
-        
+                    search_data = pd.DataFrame([obj.d_ for obj in gen]).sort_index(axis=1)
+                    if not search_data.empty:
+                        search_data.insert(0, "uuid", unique_id)
+                        self._write_to_gbq(mode, search_data)
+                except as e:
+                    if e not in errors:
+                        errors[e] = 1
+                    else:
+                        errors[e] += 1
+                    error_count +=1
+        print("Error count: ", str(error_count))
         print("Query completed successfully, returning uuid")
-        return unique_id
+        return unique_id, errors
         
     def query_gbq(self, sql):
         return pandas_gbq.read_gbq(sql, project_id=self.config["gbq_project"])
