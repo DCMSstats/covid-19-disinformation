@@ -66,7 +66,7 @@ class RedditCollector():
             dataframe,
             self.config[f"gbq_{mode}_table"], 
             project_id=self.config["gbq_project"],
-            if_exists="replace"
+            if_exists="append"
         )
         
         
@@ -118,7 +118,7 @@ class RedditCollector():
                     if not search_data.empty:
                         search_data.insert(0, "uuid", unique_id)
                         self._write_to_gbq(mode, search_data)
-                except as e:
+                except Exception as e:
                     if e not in errors:
                         errors[e] = 1
                     else:
