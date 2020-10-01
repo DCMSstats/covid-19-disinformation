@@ -11,7 +11,10 @@ from .pushshift import pushshift
 
 class RedditCollector():
     """
-    Class to collect reddit data.
+    Class to facilitate collection of reddit data for specific search terms or subreddits.
+    Data can be collected between specified start and end dates.
+    
+    All data collections are assigned a unique identifier, which is logged in the gbq_logging_table.
     """
     _REQUIRED_CONFIG = [
         "gbq_project",
@@ -42,8 +45,26 @@ class RedditCollector():
     def collect_submissions(self, query, start_date, end_date, subreddits=None):
         """
         Collect reddit submissions for the given configuration
-        parameters and write them to Google Big Query.
+        parameters and write them to the Google Big Query gbq_comments_table.
         Set query to None if no query.
+        
+        Parameters
+        ----------
+        query : str or None
+            search term for querying submissions. Use None to collect all data from specified subreddits.
+        start_date : str
+            earliest date to be queried, in "DD/MM/YYYY" format
+        end_date : str
+            latest date to be queried, in "DD/MM/YYYY" format
+        subreddits : list, optional
+            subreddits to perform query in
+            
+        Returns
+        -------
+        (str, dict)
+            A unique identifier that can be used to select the data from the relevant
+            BGQ table, counts of each error encountered
+        
         """
         unique_id, errors = self._collect("submissions", query, start_date, end_date, subreddits)
         
@@ -53,8 +74,27 @@ class RedditCollector():
     def collect_comments(self, query, start_date, end_date, subreddits=None):
         """
         Collect reddit comments for the given configuration
-        parameters and write them to Google Big Query.
+        parameters and write them to the Google Big Query gbq_submissions_table.
         Set query to None if no query.
+        
+        Parameters
+        ----------
+        query : str or None
+            search term for querying comments. Use None to collect all data from specified subreddits.
+        start_date : str
+            earliest date to be queried, in "DD/MM/YYYY" format
+        end_date : str
+            latest date to be queried, in "DD/MM/YYYY" format
+        subreddits : list, optional
+            subreddits to perform query in
+            
+        Returns
+        -------
+        (str, dict)
+            A unique identifier that can be used to select the data from the relevant
+            BGQ table, counts of each error encountered
+            
+            
         """
         unique_id = self._collect("comments", query, start_date, end_date, subreddits)
         
@@ -62,6 +102,9 @@ class RedditCollector():
     
     
     def _write_to_gbq(self, mode, dataframe):
+        """
+        Use project details from config to write to Google Big Query.
+        """
         pandas_gbq.to_gbq(
             dataframe,
             self.config[f"gbq_{mode}_table"], 
@@ -73,6 +116,8 @@ class RedditCollector():
     def _collect(self, mode, query, start_date, end_date, subreddits):
         """
         Collect data from pushshift for specified mode.
+        
+        Data is written per subreddit per day in the query period.
         """
         if mode not in ["comments", "submissions"]:
             raise ValueError("Mode must be comments or submissions")
@@ -119,15 +164,33 @@ class RedditCollector():
                         search_data.insert(0, "uuid", unique_id)
                         self._write_to_gbq(mode, search_data)
                 except Exception as e:
+                    # Store errors in errors dict, so that collection is not stopped by API errors
                     if e not in errors:
                         errors[e] = 1
                     else:
                         errors[e] += 1
                     error_count +=1
         print("Error count: ", str(error_count))
-        print("Query completed successfully, returning uuid")
+        print("Query completed successfully, returning uuid and errors")
         return unique_id, errors
         
     def query_gbq(self, sql):
+        """
+        Utility method to query from the projects database.
+        Uses the project details from the Class configuration.
+        
+        Parameters
+        ----------
+        
+        sql : str
+            A valid SQL query for a database table within the gbq_project
+        
+        
+        Returns
+        -------
+        pandas.DataFrame
+            data returned by sql query
+        
+        """
         return pandas_gbq.read_gbq(sql, project_id=self.config["gbq_project"])
                                            
