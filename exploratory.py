@@ -11,7 +11,7 @@ import datetime as dt
 import disinfo.functions as di
 
 reddit = praw.Reddit(client_id='RNGhJE66F0dfcg', 
-                     client_secret='reMSAKkNv5daoHSRG3Cy15BhVw8', 
+                     client_secret='', 
                      user_agent='cdc')
 
 
